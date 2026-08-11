@@ -1,0 +1,10 @@
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+matplotlib>=3.7
+# Optional: only needed to refresh the cached price data via scripts/fetch_data.py
+yfinance>=0.2.40
+# Dev tooling
+pytest>=7.0
+black>=24.0
+mypy>=1.8
