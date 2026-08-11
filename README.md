@@ -1,5 +1,11 @@
 # No-Regret Allocator
 
+[![CI](https://github.com/coreyczhang/no-regret-allocator/actions/workflows/ci.yml/badge.svg)](https://github.com/coreyczhang/no-regret-allocator/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Type-checked: mypy](https://img.shields.io/badge/type--checked-mypy-blue.svg)](https://mypy-lang.org/)
+
 **An online no-regret learning framework for adaptively allocating capital across trading strategies.**
 
 Given a set of `N` candidate trading strategies, this project observes each
@@ -169,6 +175,26 @@ monotonically and then plateaus, tolerating much larger rates.
 - **Turnover matters.** `FollowTheWinner`'s turnover of ~1.35 per period would be
   obliterated by transaction costs in practice; the adaptive learners keep
   turnover one to two orders of magnitude lower.
+
+## Using the library directly
+
+Every learner is a few lines to drive — feed it each period's realized returns
+and it hands back the next allocation:
+
+```python
+import numpy as np
+from nra.learners import ExponentiatedGradient
+
+learner = ExponentiatedGradient(n=4, eta=10.0)   # 4 strategies
+weights = learner.weights                         # starts uniform: [0.25, 0.25, 0.25, 0.25]
+
+for realized_returns in stream_of_period_returns:   # each a length-4 array
+    weights = learner.update(realized_returns)      # always a valid simplex point
+```
+
+Swap in `OnlineGradientDescent`, `RegretMatching`, `Uniform`, or
+`FollowTheWinner` without changing anything else. Adding a new algorithm means
+subclassing `Learner` and implementing a single `_step` method.
 
 ## Architecture
 
