@@ -31,6 +31,7 @@ dev = ["pytest>=7.0", "black>=24.0", "mypy>=1.8"]
 
 [project.scripts]
 nra-backtest = "nra.cli:main"
+nra-alphas = "nra.alphas_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

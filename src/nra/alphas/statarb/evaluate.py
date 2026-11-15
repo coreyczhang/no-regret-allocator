@@ -140,7 +140,16 @@ def run_statarb(
 
     portfolio_oos = _equal_weight(per_pair_oos)
     portfolio_is = _equal_weight(per_pair_is)
-    pair_stats = pd.DataFrame(rows)
+    columns = [
+        "pair",
+        "sector",
+        "coint_pvalue",
+        "half_life_days",
+        "sharpe_is",
+        "sharpe_oos",
+        "oos_trades",
+    ]
+    pair_stats = pd.DataFrame(rows, columns=columns)
 
     finite_hl = pair_stats["half_life_days"].replace([np.inf, -np.inf], np.nan).dropna()
     metrics = {
